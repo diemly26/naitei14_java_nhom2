@@ -23,7 +23,7 @@ public class AdminProjectController {
     private final ProjectService projectService;
     private final TeamService teamService;
 
-    private static final List<Integer> PAGE_SIZES = List.of(5, 10, 25, 50);
+    private static final List<Integer> PAGE_SIZES = List.of(10, 25, 50, 100);
 
     @GetMapping
     public String listProjects(
