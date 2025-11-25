@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.sun.membermanagementsystem.dto.response.TeamDTO;
 import vn.sun.membermanagementsystem.entities.Team;
+import vn.sun.membermanagementsystem.exception.ResourceNotFoundException;
 import vn.sun.membermanagementsystem.mapper.TeamMapper; // Cần inject Mapper
 import vn.sun.membermanagementsystem.repositories.TeamRepository;
 import vn.sun.membermanagementsystem.services.TeamService;
@@ -30,8 +31,11 @@ public class TeamServiceImpl implements TeamService {
                 .map(teamMapper::toDTO);
     }
 
+
     @Override
-    public Optional<Team> getTeamEntityById(Long id) {
-        return teamRepository.findById(id);
+    public Team getRequiredTeam(Long id) {
+        return teamRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Team not found"));
     }
+
 }
