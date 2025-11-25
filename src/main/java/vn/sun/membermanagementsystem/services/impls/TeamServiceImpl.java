@@ -8,7 +8,9 @@ import vn.sun.membermanagementsystem.dto.request.CreateTeamRequest;
 import vn.sun.membermanagementsystem.dto.request.UpdateTeamRequest;
 import vn.sun.membermanagementsystem.dto.response.TeamDTO;
 import vn.sun.membermanagementsystem.dto.response.TeamDetailDTO;
+import vn.sun.membermanagementsystem.dto.response.TeamDTO;
 import vn.sun.membermanagementsystem.entities.Team;
+import vn.sun.membermanagementsystem.mapper.TeamMapper; // Cần inject Mapper
 import vn.sun.membermanagementsystem.exception.DuplicateResourceException;
 import vn.sun.membermanagementsystem.exception.ResourceNotFoundException;
 import vn.sun.membermanagementsystem.mapper.TeamMapper;
@@ -26,6 +28,7 @@ import java.util.Optional;
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
+    private final TeamMapper teamMapper;
     private final TeamMapper teamMapper;
 
     @Override
@@ -51,8 +54,9 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<Team> getAllTeams() {
+    public List<TeamDTO> getAllTeams() {
         List<Team> teams = teamRepository.findAll();
+        return teamMapper.toDTOList(teams);
         return teams != null ? teams : Collections.emptyList();
     @Transactional
     public TeamDTO updateTeam(Long id, UpdateTeamRequest request) {
@@ -85,7 +89,13 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Optional<Team> getTeamById(Long id) {
+    public Optional<TeamDTO> getTeamById(Long id) {
+        return teamRepository.findById(id)
+                .map(teamMapper::toDTO);
+    }
+
+    @Override
+    public Optional<Team> getTeamEntityById(Long id) {
         return teamRepository.findById(id);
     @Transactional
     public boolean deleteTeam(Long id) {
