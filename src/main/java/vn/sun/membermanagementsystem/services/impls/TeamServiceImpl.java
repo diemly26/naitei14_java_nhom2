@@ -10,6 +10,7 @@ import vn.sun.membermanagementsystem.dto.response.TeamDTO;
 import vn.sun.membermanagementsystem.dto.response.TeamDetailDTO;
 import vn.sun.membermanagementsystem.dto.response.TeamDTO;
 import vn.sun.membermanagementsystem.entities.Team;
+import vn.sun.membermanagementsystem.exception.ResourceNotFoundException;
 import vn.sun.membermanagementsystem.mapper.TeamMapper; // Cần inject Mapper
 import vn.sun.membermanagementsystem.exception.DuplicateResourceException;
 import vn.sun.membermanagementsystem.exception.ResourceNotFoundException;
@@ -94,7 +95,11 @@ public class TeamServiceImpl implements TeamService {
                 .map(teamMapper::toDTO);
     }
 
+
     @Override
+    public Team getRequiredTeam(Long id) {
+        return teamRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Team not found"));
     public Optional<Team> getTeamEntityById(Long id) {
         return teamRepository.findById(id);
     @Transactional
@@ -130,6 +135,7 @@ public class TeamServiceImpl implements TeamService {
         log.info("Team detail retrieved successfully for ID: {}", id);
         return detailDTO;
     }
+
 
     @Override
     @Transactional(readOnly = true)

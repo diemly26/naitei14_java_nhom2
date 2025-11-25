@@ -15,6 +15,7 @@ public interface TeamService {
 
     Optional<TeamDTO> getTeamById(Long id);
 
+    Team getRequiredTeam(Long id);
     Optional<Team> getTeamEntityById(Long id);
     List<Team> getAllTeams();
     Optional<Team> getTeamById(Long id);

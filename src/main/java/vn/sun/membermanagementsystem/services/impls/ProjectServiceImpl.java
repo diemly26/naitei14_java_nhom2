@@ -25,11 +25,7 @@ public class ProjectServiceImpl implements ProjectService {
         Page<Project> projectsPage;
 
         if (teamId != null) {
-            Team team = teamService.getTeamEntityById(teamId).orElse(null);
-
-            if (team == null) {
-                return Page.empty(pageable);
-            }
+            Team team = teamService.getRequiredTeam(teamId);
 
             projectsPage = projectRepo.findByTeam(team, pageable);
         } else {
