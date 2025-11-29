@@ -4,7 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import vn.sun.membermanagementsystem.entities.Team;
 import vn.sun.membermanagementsystem.entities.TeamMember;
+import vn.sun.membermanagementsystem.entities.User;
+import vn.sun.membermanagementsystem.enums.MembershipStatus;
 
 import java.util.List;
 
@@ -26,4 +29,6 @@ public interface TeamMemberRepository extends JpaRepository<TeamMember, Long> {
             "AND tm.leftAt IS NULL " +
             "AND t.deletedAt IS NULL")
     List<TeamMember> findActiveTeamsByUserIds(@Param("userIds") List<Long> userIds);
+
+    boolean existsByUserAndTeamAndStatus(User user, Team team, MembershipStatus status);
 }
